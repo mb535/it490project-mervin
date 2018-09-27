@@ -1,6 +1,11 @@
 <?php
-
-
+//require('/home/mervin/git/rabbitmqphp_example/testRabbitMQClient.php');
+$user = $_POST['username'];
+$pass = $_POST['password'];
+$type = $_POST['type'];
+include('/home/mervin/git/rabbitmqphp_example/testRabbitMQClient.php');
+//echo $user; 
+//echo $pass;
 if (!isset($_POST))
 {
 	$msg = "NO POST MESSAGE SET, POLITELY FUCK OFF";
@@ -9,10 +14,11 @@ if (!isset($_POST))
 }
 $request = $_POST;
 $response = "unsupported request type, politely FUCK OFF";
-switch ($request["type"])
+switch ($type)
 {
 	case "login":
 		$response = "login, yeah we can do that";
+		//echo json_encode($response);
 	break;
 }
 echo json_encode($response);
