@@ -5,16 +5,35 @@ require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 
 $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
-
-
 $request = array();
 $request['type'] = $type;
 $request['username'] = $user;
 $request['password'] = $pass;
-$request['message'] = "HI";
+$request['message'] = "HI";               
 $response = $client->send_request($request);
-//$response = $client->publish($request);
 
+switch($type)
+{
+	case "login":
+		$request = array();
+		$request['type'] = $type;
+		$request['username'] = $user;
+		$request['password'] = $pass;
+		$request['message'] = "HI";
+		$response = $client->send_request($request);
+	break;
+	case "register":
+		$request = array();
+                $request['type'] = $type;
+                $request['username'] = $user;
+		$request['password'] = $pass;
+		$request['email'] = $email;
+                $request['message'] = "HI";
+                $response = $client->send_request($request);
+
+		//$response = $client->publish($request);
+	break;
+}
 echo "client received response: ".PHP_EOL;
 print_r($response);
 echo "\n\n";
