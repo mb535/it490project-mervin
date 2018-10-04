@@ -52,7 +52,8 @@ public function registerUser($username, $password, $email)
                         return 0;
                 }
                 //echo "passwords did not match for $username".PHP_EOL;
-        }
+	}
+	$response->execute();
         return 1;
 }
 }
