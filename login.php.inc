@@ -40,10 +40,10 @@ public function registerUser($username, $password, $email)
 	$un = $this->logindb->real_escape_string($username);
 	$pw = $this->logindb->real_escape_string($password);
 	$em = $this->logindb->real_escape_string($email);
-        $statement = "insert into users(screenname, password, email) VALUES('$un', $pw', '$em')";
-        $response = $this->logindb->query($statement);
+        $statement = "insert into users(screenname, password, email) VALUES('$un', '$pw', '$em')";
+        $response = $this->logindb->prepare($statement);
 
-        while ($row = $response->fetch_assoc())
+       /* while ($row = $response->fetch_assoc())
         {
                 echo "checking password for $username".PHP_EOL;
                 if (($row["username"] == $un ) || ($row["email"]== $em))
@@ -52,7 +52,7 @@ public function registerUser($username, $password, $email)
                         return 0;
                 }
                 //echo "passwords did not match for $username".PHP_EOL;
-	}
+	}*/
 	$response->execute();
         return 1;
 }
