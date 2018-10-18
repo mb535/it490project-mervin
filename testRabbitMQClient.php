@@ -60,7 +60,7 @@ function login($user,$password){
     $request['type'] = "login";
     $request['username'] = $user;
     $request['password'] = $password;
-
+    
     $response = $client->send_request($request);
     //$response = $client->publish($request);
     //echo "client received response: ".PHP_EOL;
@@ -94,7 +94,24 @@ function register($user,$password, $email)
     echo "\n\n";
     echo $argv[0]." END".PHP_EOL;
 }
-//function validateSession();
+/*
+function validateSession(){
+    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $s_id = session_id();
+    $request = array();
+    $request['type'] = "validate_session";
+    $request['sessionId'] = $s_id;
+
+}
+*/
 function foodLookup($user_search){
     $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
     if (isset($argv[1]))
