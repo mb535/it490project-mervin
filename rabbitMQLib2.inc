@@ -234,8 +234,8 @@ class rabbitMQClient
 		}
 		catch(Exception $e)
 		{
-			//$txt = "failed to send message to exchange: ". $e->getMessage(). "\n";
-                        //file_put_contents('/var/www/html/errors.txt', $txt . "\n", FILE_APPEND);
+			$txt = "failed to send message to exchange: ". $e->getMessage(). "\n";
+                        file_put_contents('/var/www/html/errors.txt', $txt . "\n", FILE_APPEND);
 
 			die("failed to send message to exchange: ". $e->getMessage()."\n");
 		}

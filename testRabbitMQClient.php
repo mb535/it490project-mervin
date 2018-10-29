@@ -3,7 +3,8 @@
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
-
+//error_log(print_r($v, TRUE), 3, '/var/www/html/errors.txt');
+//require('errorLogging.php');
 //$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
 //$request = array();
 //$request['type'] = $type;
@@ -127,11 +128,43 @@ function foodLookup($user_search){
     $request['search'] = $user_search;
 
 
-    $response = $client->send_request($request);
+    $json = $client->send_request($request);
     //$response = $client->publish($request);
     //echo "client received response: ".PHP_EOL;
     // print_r($response);
-    $mealID = $response['meals']['0']['strMeal'];
+    $x = 0;
+    foreach($json['meals'] as $meals)
+    {
+	
+	$mealID = $json ['meals'][$x]['idMeal'];
+ print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
+ //return $mealID;
+ 	$mealName = $json ['meals'][$x]['strMeal'];
+ 	print_r ("<strong> Meal name is: </strong>" . $mealName . "<br />");
+ 	$mealCat = $json ['meals'][$x]['strCategory'];
+ 	print_r ("<strong> Meal ID is: </strong>" . $mealCat . "<br />");
+ 	$mealArea = $json ['meals'][$x]['strArea'];
+	print_r ("<strong> Meal ID is: </strong>" . $mealArea . "<br />");
+	$mealInst = $json ['meals'][$x]['strInstructions'];
+	print_r ("<strong> Meal ID is: </strong>" . $mealInst . "<br />");
+
+	$mealImg = $json ['meals'][$x]['strMealThumb'];
+	print_r("<img src= $mealImg width=175 height=200 />");
+
+	//print_r ("<strong> Meal ID is: </strong>" . $mealImg . "<br />");	
+	//$mealName = $meals['strMeal'];
+        //$mealID = $meals['idMeal'];
+        //$mealImg = $meals['strMealThumb'];
+        //print_r ("<strong> Meal name is: </strong>" . $mealName . "<br />");
+        //print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
+        //print_r ("<strong> Meal Image is: </strong>" . $mealImg . "<br />");
+        //print_r("<img src= $mealImg width=175 height=200 />");
+	print_r("<br />");
+	$x++;
+    }
+
+
+    //$mealID = $response['meals']['0']['strMeal'];
     print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
     //return $response;
     echo "\n\n";
