@@ -1,4 +1,6 @@
 <?php
+//require('/home/mervin/git/rabbitmqphp_example/errorLogging.php');
+
 include('/home/mervin/git/rabbitmqphp_example/testRabbitMQClient.php');
 
 $user = $_POST['username'];

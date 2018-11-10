@@ -12,40 +12,7 @@ require_once('rabbitMQLib.inc');
 //$request['password'] = $pass;
 //$request['message'] = "HI";               
 //$response = $client->send_request($request);
-/*
-switch($type)
-{
-	case "login":
-		$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
-		$request = array();
-		$request['type'] = $type;
-		$request['username'] = $user;
-		$request['password'] = $pass;
-		$request['message'] = "HI";
-		$response = $client->send_request($request);
-		//echo "client received response: ".PHP_EOL;
-		//print_r($response);
 
-		break;
-	case "register":
-		$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
-		$request = array();
-                $request['type'] = $type;
-                $request['username'] = $user;
-		$request['password'] = $pass;
-		$request['email'] = $email;
-                $request['message'] = "HI";
-                $response = $client->send_request($request);
-
-		//$response = $client->publish($request);
-		break;
-}
-
-
-echo "client received response: ".PHP_EOL;
-print_r($response);
-echo "\n\n";
-*/
 //echo $argv[0]." END".PHP_EOL;
 function login($user,$password){
     $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
@@ -128,44 +95,233 @@ function foodLookup($user_search){
     $request['search'] = $user_search;
 
 
-    $json = $client->send_request($request);
+    $response = $client->send_request($request);
     //$response = $client->publish($request);
     //echo "client received response: ".PHP_EOL;
-    // print_r($response);
-    $x = 0;
-    foreach($json['meals'] as $meals)
-    {
+
+    $response = json_decode($response);
+    //print_r($response);
+
+    foreach($response as $key => $meals){
+	foreach($meals as $key => $value){
+		//print_r(("<br><br><strong> Meal name is: </strong>" . $value . "<br />");
+		if($key == "mealName"){
+			echo "<br><strong>Meal name is: ". $value. "</strong><br>";		
+			echo "<br><strong><a href='display.php?value=".$value."'>Instructions</a></strong><br>";
+			
+		}
+		if($key == "mealMeasure"){
+			//$_SESSION['mealMeasure'] = $value;
 	
-	$mealID = $json ['meals'][$x]['idMeal'];
- print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
- //return $mealID;
- 	$mealName = $json ['meals'][$x]['strMeal'];
- 	print_r ("<strong> Meal name is: </strong>" . $mealName . "<br />");
- 	$mealCat = $json ['meals'][$x]['strCategory'];
- 	print_r ("<strong> Meal ID is: </strong>" . $mealCat . "<br />");
- 	$mealArea = $json ['meals'][$x]['strArea'];
-	print_r ("<strong> Meal ID is: </strong>" . $mealArea . "<br />");
-	$mealInst = $json ['meals'][$x]['strInstructions'];
-	print_r ("<strong> Meal ID is: </strong>" . $mealInst . "<br />");
+		}
+		if($key == "mealIngredients"){
+			//$_SESSION['mealIngre']= $value;
+		}
+		
+		if($key == "mealImage"){
+			//$_SESSION['mealImage'] = $value;
+			echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
+		
+		}
+		if($key == "mealInstructions"){
+			//$_SESSION['mealInst'] = $value;
+			//echo "<br><a href='display.php'>Instructions</a><br>";	
+			
+			
+		}
+	}
+    }
 
-	$mealImg = $json ['meals'][$x]['strMealThumb'];
-	print_r("<img src= $mealImg width=175 height=200 />");
+    //$mealID = $response['meals']['0']['strMeal'];
+    //print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
+    //return $response;
+    echo "\n\n";
+    echo $argv[0]." END".PHP_EOL;
 
-	//print_r ("<strong> Meal ID is: </strong>" . $mealImg . "<br />");	
-	//$mealName = $meals['strMeal'];
-        //$mealID = $meals['idMeal'];
-        //$mealImg = $meals['strMealThumb'];
-        //print_r ("<strong> Meal name is: </strong>" . $mealName . "<br />");
-        //print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
-        //print_r ("<strong> Meal Image is: </strong>" . $mealImg . "<br />");
-        //print_r("<img src= $mealImg width=175 height=200 />");
-	print_r("<br />");
-	$x++;
+
+}
+function foodDisplay($user_search){
+    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "foodLookup";
+    $request['search'] = $user_search;
+
+
+    $response = $client->send_request($request);
+    //$response = $client->publish($request);
+    //echo "client received response: ".PHP_EOL;
+
+    $response = json_decode($response);
+    //print_r($response);
+
+    foreach($response as $key => $meals){
+	foreach($meals as $key => $value){
+		//print_r(("<br><br><strong> Meal name is: </strong>" . $value . "<br />");
+		if($key == "mealName"){
+			$_SESSION['mealName'] = $value;
+			//echo "<br><strong>Meal name is: ". $value. "</strong><br>";
+			
+		}
+		if($key == "mealMeasure"){
+			$_SESSION['mealMeasure'] = $value;
+	
+		}
+		if($key == "mealIngredients"){
+			$_SESSION['mealIngre']= $value;
+		}
+		
+		
+		if($key == "mealInstructions"){
+			$_SESSION['mealInst'] = $value;
+			//echo "<br><a href='display.php'>Instructions</a><br>";	
+			
+			
+		}
+		if($key == "mealImage"){
+			$_SESSION['mealImage'] = $value;
+			//echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
+		
+		}
+	}
+    }
+
+    //$mealID = $response['meals']['0']['strMeal'];
+    //print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
+    //return $response;
+    echo "\n\n";
+    echo $argv[0]." END".PHP_EOL;
+
+
+}
+function cuisineLookup($cuisine){
+    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "cuisineLookup";
+    $request['search'] = $cuisine;
+
+
+    $response = $client->send_request($request);
+    //$response = $client->publish($request);
+    //echo "client received response: ".PHP_EOL;
+    //print_r($response);
+    $response = json_decode($response);
+    
+
+   //$x = 0;
+  
+    foreach($response as $key => $meals){
+	foreach($meals as $key => $value){
+		//print_r(("<br><br><strong> Meal name is: </strong>" . $value . "<br />");
+		if($key == "mealName"){
+			//$_SESSION['mealName'] = $value;
+			echo "<br><strong>Meal name is: ". $value. "</strong><br>";		
+			echo "<br><strong><a href='display.php?value=".$value."'>Instructions</a></strong><br>";
+		}
+		if($key == "mealIngredients"){
+			//$_SESSION['mealIngre'] = $value;
+			//echo "<br><strong>Ingredients: ". "</strong><br>";
+			
+		}
+		if($key == "mealMeasure"){
+			//$_SESSION['mealMeasure'] = $value;
+	
+		}
+		if($key == "mealInstructions"){
+			//$_SESSION['mealInst'] = $value;
+				
+		}
+		//print_r("<img src= $meals['mealImage'] width=175 height=200 />");
+		if($key == "mealImage"){
+			//$_SESSION['mealImage'] = $value;
+			//$mealImg = base64_encode($mealImg);
+			echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
+		
+		}
+		
+	}
+	
     }
 
 
+    //return $response;
+    echo "\n\n";
+    echo $argv[0]." END".PHP_EOL;
+
+
+}
+function ingreLookup($user_search){
+    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "ingreLookup";
+    $request['search'] = $user_search;
+
+
+    $response = $client->send_request($request);
+    //$response = $client->publish($request);
+    //echo "client received response: ".PHP_EOL;
+
+    $response = json_decode($response);
+    //print_r($response);
+
+  
+    foreach($response as $key => $meals){
+	foreach($meals as $key => $value){
+		//print_r(("<br><br><strong> Meal name is: </strong>" . $value . "<br />");
+		if($key == "mealName"){
+			//$_SESSION['mealName'] = $value;
+			echo "<br><strong>Meal name is: ". $value. "</strong><br>";		
+			echo "<br><strong><a href='display.php?value=".$value."'>Instructions</a></strong><br>";
+		}
+		if($key == "mealIngredients"){
+			//$_SESSION['mealIngre'] = $value;
+			//echo "<br><strong>Ingredients: ". "</strong><br>";
+			
+		}
+		if($key == "mealMeasure"){
+			//$_SESSION['mealMeasure'] = $value;
+	
+		}
+		if($key == "mealInstructions"){
+			//$_SESSION['mealInst'] = $value;
+				
+		}
+		//print_r("<img src= $meals['mealImage'] width=175 height=200 />");
+		if($key == "mealImage"){
+			//$_SESSION['mealImage'] = $value;
+			//$mealImg = base64_encode($mealImg);
+			echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
+		
+		}
+		
+	}
+    }
+
     //$mealID = $response['meals']['0']['strMeal'];
-    print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
+    //print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
     //return $response;
     echo "\n\n";
     echo $argv[0]." END".PHP_EOL;
