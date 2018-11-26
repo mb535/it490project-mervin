@@ -1,5 +1,5 @@
 <?php
-include('/home/mervin/git/rabbitmqphp_example/testRabbitMQClient.php');
+include('rabbitmqphp_example/testRabbitMQClient.php');
 
 session_start();
 //$s_id = session_id();

@@ -1,7 +1,7 @@
 <?php
 
 
-include('~/git/rabbitmqphp_example/testRabbitMQClient.php');
+include('rabbitmqphp_example/testRabbitMQClient.php');
 
 $user = $_POST['username'];
 $email = $_POST['email'];

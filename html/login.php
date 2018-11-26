@@ -2,7 +2,7 @@
 //include('/home/homepath.php');
 //gethome();
 
-include '/home/mervin/git/rabbitmqphp_example/testRabbitMQClient.php';
+include 'rabbitmqphp_example/testRabbitMQClient.php';
 error_reporting(E_ALL);
 
 session_start();

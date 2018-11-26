@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('/home/mervin/git/rabbitmqphp_example/testRabbitMQClient.php');
+include('rabbitmqphp_example/testRabbitMQClient.php');
 $user_search = $_GET['value'];
 if($user_search == $_GET['value']){
 	foodDisplay($user_search);
