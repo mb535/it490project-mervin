@@ -328,4 +328,29 @@ function ingreLookup($user_search){
 
 
 }
+function showComments($mealName){
+    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "commentLookup";
+    $request['search'] = $mealName;
+
+
+    $response = $client->send_request($request);
+    //$response = $client->publish($request);
+    //echo "client received response: ".PHP_EOL;
+
+    $response = json_decode($response);
+    //print_r($response);
+
+
+}
+function addComment(){}
 ?>

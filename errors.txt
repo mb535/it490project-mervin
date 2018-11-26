@@ -1,1 +1,11 @@
 sdhui
+failed to send message to exchange: AMQPConnectionException: Socket error: could not connect to host. in /home/mervin/git/rabbitmqphp_example/rabbitMQLib.inc:112
+Stack trace:
+#0 /home/mervin/git/rabbitmqphp_example/rabbitMQLib.inc(112): AMQPConnection->connect()
+#1 /home/mervin/git/rabbitmqphp_example/testRabbitMQServer.php(37): rabbitMQServer->process_requests('requestProcesso...')
+#2 {main}
+failed to send message to exchange: AMQPConnectionException: Socket error: could not connect to host. in /home/mervin/git/rabbitmqphp_example/rabbitMQLib.inc:112
+Stack trace:
+#0 /home/mervin/git/rabbitmqphp_example/rabbitMQLib.inc(112): AMQPConnection->connect()
+#1 /home/mervin/git/rabbitmqphp_example/testRabbitMQServer.php(37): rabbitMQServer->process_requests('requestProcesso...')
+#2 {main}
