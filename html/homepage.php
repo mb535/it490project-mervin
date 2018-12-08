@@ -1,10 +1,12 @@
 <?php
-
+error_reporting(0); 
+@ini_set('display_errors', 0); 
 //require('/home/mervin/git/rabbitmqphp_example/errorLogging.php');
-
+//comment;
 session_start();
-echo $_SESSION["user"];
+//echo $_SESSION["user"];
 if(!isset($_SESSION["user"])){
+  //echo "<script type='text/javascript'>alert('Please Login First');</script>";
   //header("Location: index.html");
 }
 
@@ -49,16 +51,18 @@ if(!isset($_SESSION["user"])){
 	<title>Home Page</title>
 	<h1>Home Page </h1>
 	<h2>Welcome, <?php echo $_SESSION["user"];?></h2>
+	<a href= 'profilePage.php'>Profile</a><br>
+	<a href="recommendationPage.php">Daily Recommendation</a>
 	<form action="api2.php" method='POST'>
       	<input type="text" name = "food" id = "searchBar" placeholder="Search.." maxlength= "15" autocomplete="on" value="" /><br>
 	Recipe <input type =radio name ="type" value="Recipe"><br>
 	Cuisine <input type =radio name ="type" value="Country"><br>
      	Ingredients <input type =radio name ="type" value="Ingredients"><br>
-	Category <input type =radio name ="type" value="Category"><br>
 
 	<button type="submit">Submit </button>
-	 
+	
     	</form>
+	
 	<a href= 'logout.php'>Logout</a>
 </div>
 <div class="container">
@@ -208,7 +212,6 @@ if(!isset($_SESSION["user"])){
 
 </div>
 
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 
 </html>

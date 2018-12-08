@@ -1,21 +1,34 @@
-#!/usr/bin/php
+
 <?php
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 //error_log(print_r($v, TRUE), 3, '/var/www/html/errors.txt');
-//require('errorLogging.php');
-//$client = new rabbitMQClient("testRabbitMQ.ini","testServer");
-//$request = array();
-//$request['type'] = $type;
-//$request['username'] = $user;
-//$request['password'] = $pass;
-//$request['message'] = "HI";               
-//$response = $client->send_request($request);
-
 //echo $argv[0]." END".PHP_EOL;
+
+
+error_reporting(0); 
+@ini_set('display_errors', 0); 
+//echo whichServer(); 
+
+function whichServer() { 
+	set_time_limit(0); 
+	$address = '192.168.1.120'; 
+	$port = '15672'; 
+	$fp = fsockopen($address, $port, $errno, $errstr); 
+	if($fp) {
+		return "testServer2"; 
+	} 
+	else {	
+		return "testServer"; 
+	} 
+}
+
+//$server = (string)$server;
+//echo $server;
 function login($user,$password){
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    $server = whichServer(); 
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -39,7 +52,8 @@ function login($user,$password){
 }
 function register($user,$password, $email)
   {
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    $server = whichServer(); 
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -64,7 +78,7 @@ function register($user,$password, $email)
 }
 /*
 function validateSession(){
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -81,7 +95,8 @@ function validateSession(){
 }
 */
 function foodLookup($user_search){
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+    	$server = whichServer(); 
+	$client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -104,9 +119,8 @@ function foodLookup($user_search){
 
     foreach($response as $key => $meals){
 	foreach($meals as $key => $value){
-		//print_r(("<br><br><strong> Meal name is: </strong>" . $value . "<br />");
 		if($key == "mealName"){
-			echo "<br><strong>Meal name is: ". $value. "</strong><br>";		
+			echo "<strong>". $value. "</strong>";		
 			echo "<br><strong><a href='display.php?value=".$value."'>Instructions</a></strong><br>";
 			
 		}
@@ -120,7 +134,7 @@ function foodLookup($user_search){
 		
 		if($key == "mealImage"){
 			//$_SESSION['mealImage'] = $value;
-			echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
+			echo "<img src=$value width=175 height=200 />". "<br><br>";		
 		
 		}
 		if($key == "mealInstructions"){
@@ -141,7 +155,8 @@ function foodLookup($user_search){
 
 }
 function foodDisplay($user_search){
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+	$server = whichServer(); 
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -190,19 +205,23 @@ function foodDisplay($user_search){
 			//echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
 		
 		}
+		if($key == "mealCategory"){
+			$_SESSION['mealCategory'] = $value;
+		}
 	}
     }
 
     //$mealID = $response['meals']['0']['strMeal'];
     //print_r ("<strong> Meal ID is: </strong>" . $mealID . "<br />");
     //return $response;
-    echo "\n\n";
-    echo $argv[0]." END".PHP_EOL;
+    //echo "\n\n";
+    //echo $argv[0]." END".PHP_EOL;
 
 
 }
 function cuisineLookup($cuisine){
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -230,7 +249,7 @@ function cuisineLookup($cuisine){
 		//print_r(("<br><br><strong> Meal name is: </strong>" . $value . "<br />");
 		if($key == "mealName"){
 			//$_SESSION['mealName'] = $value;
-			echo "<br><strong>Meal name is: ". $value. "</strong><br>";		
+			echo "<strong>". $value. "</strong>";		
 			echo "<br><strong><a href='display.php?value=".$value."'>Instructions</a></strong><br>";
 		}
 		if($key == "mealIngredients"){
@@ -250,7 +269,7 @@ function cuisineLookup($cuisine){
 		if($key == "mealImage"){
 			//$_SESSION['mealImage'] = $value;
 			//$mealImg = base64_encode($mealImg);
-			echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
+			echo "<img src=$value width=175 height=200 />". "<br><br>";		
 		
 		}
 		
@@ -266,7 +285,8 @@ function cuisineLookup($cuisine){
 
 }
 function ingreLookup($user_search){
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -293,7 +313,7 @@ function ingreLookup($user_search){
 		//print_r(("<br><br><strong> Meal name is: </strong>" . $value . "<br />");
 		if($key == "mealName"){
 			//$_SESSION['mealName'] = $value;
-			echo "<br><strong>Meal name is: ". $value. "</strong><br>";		
+			echo "<strong>". $value. "</strong>";		
 			echo "<br><strong><a href='display.php?value=".$value."'>Instructions</a></strong><br>";
 		}
 		if($key == "mealIngredients"){
@@ -313,7 +333,7 @@ function ingreLookup($user_search){
 		if($key == "mealImage"){
 			//$_SESSION['mealImage'] = $value;
 			//$mealImg = base64_encode($mealImg);
-			echo "Meal image is: ". "<br>". "<img src=$value width=175 height=200 />". "<br>";		
+			echo "<img src=$value width=175 height=200 />". "<br><br>";		
 		
 		}
 		
@@ -329,7 +349,8 @@ function ingreLookup($user_search){
 
 }
 function showComments($mealName){
-    $client = new rabbitMQClient("testRabbitMQ.ini","testServer");
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
     if (isset($argv[1]))
     {
       $msg = $argv[1];
@@ -349,8 +370,239 @@ function showComments($mealName){
 
     $response = json_decode($response);
     //print_r($response);
+    $_SESSION['showComment'] = $response;
+    //return $response;
+    
+    //print_r($response);
 
 
 }
-function addComment(){}
+
+function addComment($mealName, $user, $date, $comment){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "commentInsert";
+    $request['search'] = $mealName;
+    $request['username'] = $user;
+    $request['date'] = $date;
+    $request['comment'] = $comment;
+    $response = $client->send_request($request);
+    //$response = $client->publish($request);
+    //echo "client received response: ".PHP_EOL;
+
+    //$response = json_decode($response);
+    return $response;
+    //print_r($response);
+
+}
+
+function recommendUpdater($user,$meal,$category){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "recommendUpdater";
+    $request['search'] = $user;
+    $request['mealName'] = $meal;
+    $request['category'] = $category;
+    $response = $client->send_request($request);
+    return $response;
+
+}
+
+function dislikeUpdater($user, $meal){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "dislikeUpdater";
+    $request['search'] = $user;
+    $request['mealName'] = $meal;
+    $response = $client->send_request($request);
+    return $response;
+
+}
+
+function dislikeDelete($user, $meal){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "dislikeDelete";
+    $request['search'] = $user;
+    $request['mealName'] = $meal;
+    $response = $client->send_request($request);
+    return $response;
+}
+
+function likeDelete($user,$meal){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "likeDelete";
+    $request['search'] = $user;
+    $request['mealName'] = $meal;
+    $response = $client->send_request($request);
+    return $response;
+
+}
+
+function showLikes($user){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "showLikes";
+    $request['search'] = $user;
+    $response = $client->send_request($request);
+    $response = json_decode($response);
+    $_SESSION['userLikes'] = $response;
+
+}
+
+function showDislikes($user){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "showDislikes";
+    $request['search'] = $user;
+    $response = $client->send_request($request);
+    $response = json_decode($response);
+    $_SESSION['userDislikes'] = $response;
+
+}
+function showRecommendation($user){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "showRecommendation";
+    $request['search'] = $user;
+    $response = $client->send_request($request);
+    $response = json_decode($response);
+    //print_r($response);
+    $_SESSION['userRecommendation'] = $response;
+}
+
+function showFavorites($user){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "showFavs";
+    $request['search'] = $user;
+    $response = $client->send_request($request);
+    $response = json_decode($response);
+    $_SESSION['userFavs'] = $response;
+
+}
+function favUpdater($user, $meal){
+	$server = whichServer();
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "favUpdater";
+    $request['search'] = $user;
+    $request['mealName'] = $meal;
+    $response = $client->send_request($request);
+    return $response;
+}
+
+function delFavorite($user, $meal){
+	$server = whichServer();
+    //echo $user;
+    //echo $meal;
+    $client = new rabbitMQClient("testRabbitMQ.ini","$server");
+    if (isset($argv[1]))
+    {
+      $msg = $argv[1];
+    }
+    else
+    {
+      $msg = "test message";
+    }
+    $request = array();
+    $request['type'] = "delFav";
+    $request['search'] = $user;
+    $request['mealName'] = $meal;
+
+    $response = $client->send_request($request);
+    return $response;
+}
+
+
 ?>

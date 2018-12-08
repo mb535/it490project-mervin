@@ -1,9 +1,9 @@
 <?php
 //include('/home/homepath.php');
 //gethome();
-
+//124444444;
 include 'rabbitmqphp_example/testRabbitMQClient.php';
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 
 session_start();
 
@@ -14,7 +14,7 @@ $response = login($user,$password);
 
 if($response == 0)
   {
-    echo "Failed, try again";
+    echo "<script type='text/javascript'>alert('Failed, try again');</alert>";
     header( "Refresh:1; url=index.html");
   }
 
@@ -24,7 +24,7 @@ elseif($response == 1)
 	//$s_id= $session_id();
 	$_SESSION["user"] = $user;
 	echo $user;
-	header( "Refresh:3; url=homepage.php");
+	header( "Refresh:0; url=homepage.php");
   	}
 
 
