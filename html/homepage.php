@@ -1,13 +1,13 @@
 <?php
-//error_reporting(0); 
-//@ini_set('display_errors', 0); 
+error_reporting(0); 
+@ini_set('display_errors', 0); 
 //require('/home/mervin/git/rabbitmqphp_example/errorLogging.php');
 //comment;
-//session_start();
+session_start();
 //echo $_SESSION["user"];
 if(!isset($_SESSION["user"])){
   //echo "<script type='text/javascript'>alert('Please Login First');</script>";
-  //header("Location: index.html");
+  header("Location: index.html");
 }
 
 ?>

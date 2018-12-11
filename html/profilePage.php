@@ -57,30 +57,30 @@
 		<div style="width:800px; margin:0 auto;">
 			
 			<?php
-				//error_reporting(0); 
-				//@ini_set('display_errors', 0); 
-				//include('rabbitmqphp_example/testRabbitMQClient.php');
-				//session_start();
+				error_reporting(0); 
+				@ini_set('display_errors', 0); 
+				include('rabbitmqphp_example/testRabbitMQClient.php');
+				session_start();
 				if (!isset($_SESSION["user"]))
 				{
-				 //header('Location: index.html');
+				 header('Location: index.html');
 				}
 				//sleep(3);
-				//$user = $_SESSION["user"];
+				$user = $_SESSION["user"];
 				echo "<div class='container'>";
 				echo "<br><br><h1 class='my-4 text-center text-lg-left'>These are your Favorites:</h1>";
 
-				//include('showFavorites.php');
+				include('showFavorites.php');
 
 				echo "<br><br><h1 class='my-4 text-center text-lg-left'>These are your Likes:</h1>";
 
-				//include('showLikes.php');
+				include('showLikes.php');
 
 				echo "<br><br><h1 class='my-4 text-center text-lg-left'>These are your Dislikes:</h1>";
 				
-				//include('showDislikes.php');
+				include('showDislikes.php');
 				
-				//unset($_SESSION['userFavs']);
+				unset($_SESSION['userFavs']);
 			?>
 			<br>
 			<br>
