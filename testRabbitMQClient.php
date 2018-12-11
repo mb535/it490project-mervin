@@ -13,14 +13,14 @@ error_reporting(0);
 
 function whichServer() { 
 	set_time_limit(0); 
-	$address = '192.168.1.120'; 
+	$address = '192.168.1.132'; 
 	$port = '15672'; 
 	$fp = fsockopen($address, $port, $errno, $errstr); 
 	if($fp) {
-		return "testServer2"; 
+		return "testServer"; 
 	} 
 	else {	
-		return "testServer"; 
+		return "failServer"; 
 	} 
 }
 

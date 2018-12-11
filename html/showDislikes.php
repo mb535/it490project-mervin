@@ -20,5 +20,5 @@ foreach($userDislikes as $key => $Dislikes){
     }
 }
 
-unset($_SESSION['userDislikes']);
+//unset($_SESSION['userDislikes']);
 ?>

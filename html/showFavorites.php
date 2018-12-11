@@ -40,5 +40,5 @@ foreach($userFavs as $key => $Fav){
     }
 }
 
-unset($_SESSION['userFavs']);
+//unset($_SESSION['userFavs']);
 ?>

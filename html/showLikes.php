@@ -46,5 +46,5 @@ foreach($userLikes as $key => $Likes){
     }
 }
 
-unset($_SESSION['userLikes']);
+//unset($_SESSION['userLikes']);
 ?>
